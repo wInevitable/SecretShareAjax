@@ -37,6 +37,14 @@ columns and `out_friend`/`in_friend` associations. Add appropriate
 indices, as ever. What presence/uniqueness validation should you add?
 Add DB constraints.
 
+So which friend is which? I feel that the `out_friend` is the one that
+is reaching *out* to the other. When I visit a users page and click friend
+I am reaching *out* to that user and am therefore the `out_friend`. 
+The one that someone is *in*terested in is the `in_friend`. 
+
+So all the `out_friendships` are records created when the `current_user`
+clicked *add friend* on another users page.
+
 We want to write a `/users` index page, listing all the users, and
 showing buttons to allow us to friend people.
 
