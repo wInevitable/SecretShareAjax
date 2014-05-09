@@ -105,7 +105,9 @@ done.
 
 Is that success callback being called? No? What is your `create` 
 method doing upon success? If it is redirecting, you got problems.
-All it needs to do is `head :ok`.
+All it needs to do is `head :ok`. Make sure to set the jQuery Ajax
+option `dataType` to `text`, not `json`, or jQuery won't call your
+success callback.
 
 One last thing before you move on. Please disable the button (lookup
 on MDN/jQuery how to do this), changing the text to "Friending...",
