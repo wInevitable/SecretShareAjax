@@ -6,3 +6,34 @@
     <li><%= secret.title %></li>
   <% end %>
 </ul>
+
+<%= link_to "Add a Secret", new_user_secret_url(@user)%>
+
+<h1>Share a Secret</h1>
+
+<form id="secret-form">
+    <input type="text" name="secret[title]">
+    <input type="hidden" name="secret[recipient_id]" value="<%= @user.id %>">
+    <input type="submit">
+</form>
+
+<script>
+  $("#secret-form").on("submit", function(event) {
+
+      event.preventDefault();
+  
+      var formData = $(this).serialize();
+  
+      $.ajax({
+        url: "/secrets",
+        type: "POST",
+        data: formData,
+        success: function (data) {
+          $('ul').append("<li>" + data.title + "</li>");
+        }
+      });
+    }
+  );
+  
+  
+</script>
