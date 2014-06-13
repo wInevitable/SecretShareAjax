@@ -1,0 +1,8 @@
+<h1>Find a Friend</h1>
+
+<% @users.each do |user| %>
+  <%= user.username %>
+  <% if Friendship.can_friend?(current_user.id, user.id)%>
+    <%= render "friendships/form", user: user %>
+  <% end %>
+<% end %>
