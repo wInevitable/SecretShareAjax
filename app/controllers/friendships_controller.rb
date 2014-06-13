@@ -1,20 +1,17 @@
 class FriendshipsController < ApplicationController
   
-  def new
-    @friendship = Friendship.new
-  end
-  
   def create
-    @friendship = Friendship.new(friendship_params)
+    @friendship = Friendship.new
+    @friendship.in_friend_id = params[:user_id]
     @friendship.out_friend_id = current_user.id
-    @friendship.save!
-    redirect_to users_url
-    #render json: @friendship
+    @friendship.save! 
+    render json: @friendship
   end
   
-  
-  private
-  def friendship_params
-    params.require(:friendships).permit(:in_friend_id)
+  def destroy
+    current_user.out_friendships.where(in_friend_id: params[:user_id]).first!.destroy
+
+    head :ok
   end
+  
 end

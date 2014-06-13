@@ -15,14 +15,14 @@ class User < ActiveRecord::Base
   
   has_many(
     :out_friendships,
-    :class_name => "Friendships",
-    :foreign_key => :in_friend_id
+    :class_name => "Friendship",
+    :foreign_key => :out_friend_id
   )
   
   has_many(
-    :out_friends,
-    through: :friendships,
-    source: :out_friend
+    :friends,
+    through: :out_friendships,
+    source: :in_friend
   )
 
   validates :password_digest, :presence => { :message => "Password can't be blank" }

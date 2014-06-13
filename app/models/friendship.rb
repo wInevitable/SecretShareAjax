@@ -15,4 +15,23 @@ class Friendship < ActiveRecord::Base
     
     return true
   end
+  
+  def self.can_unfriend?(out_friend_id, in_friend_id)
+  
+    if self.exists?(:out_friend_id => out_friend_id, :in_friend_id => in_friend_id)
+      return true
+    end
+    
+    return false
+  end
+  
+  def self.friendship_id(out_friend_id, in_friend_id)
+    friend = self.where(["out_friend_id = ? and in_friend_id = ?",
+                      out_friend_id, in_friend_id]).first
+    if friend          
+      return friend.id
+    end
+  end
+  
+  
 end

@@ -1,8 +1,69 @@
 <h1>Find a Friend</h1>
 
-<% @users.each do |user| %>
-  <%= user.username %>
-  <% if Friendship.can_friend?(current_user.id, user.id)%>
-    <%= render "friendships/form", user: user %>
+<ul class="friends">
+  <% @users.each do |user| %>
+    <% next if user.id == current_user.id %>
+    
+    <li>
+      <%= user.username %>
+      
+      <% if Friendship.can_friend?(current_user.id, user.id) %>
+        <div class="friend-buttons can-friend">
+      <% else %>
+        <div class= "friend-buttons can-unfriend">
+      <% end%> 
+      
+        <button class="friend" id="<%= user.id %>" data-id="<%= user.id %>">Add Friend</button>
+      
+        <button class="unfriend" id="<%= user.id %>" data-id="<%= user.id %>">Remove Friend</button>
+        </div>
+    </li>
   <% end %>
-<% end %>
+</ul>
+
+<script>
+  $(document).ready(function() {
+    var toggle = function ($el) {
+      $el.toggleClass("can-friend can-unfriend");   
+    }
+    
+    $(".friend").on('click', function(event) {
+     event.preventDefault();
+   
+     var $button = $(this);
+     var $inFriendId = $(this).data("id");
+     var $div = $button.closest("div"); 
+     
+     $.ajax({
+       url: "/users/" + $inFriendId + "/friendship",
+       type: "POST",
+       dataType: "text",
+       success: toggle ($div),
+       error: function() {
+         console.log("hit error")
+       }
+     });
+    });
+    
+    
+    $(".unfriend").on('click', function(event) {
+     event.preventDefault();
+   
+     var $button = $(this);
+     var $inFriendId = $(this).data("id");
+     var $div = $button.closest("div"); 
+       
+     $.ajax({
+       url: "/users/" + $inFriendId + "/friendship",
+       type: "DELETE",
+       dataType: "text",
+       success: toggle($div),
+       error: function() {
+         console.log($inFriendId);
+         console.log("hit error");
+       }
+     });
+    });
+    
+  });
+</script>
